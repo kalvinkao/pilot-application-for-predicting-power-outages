@@ -1,7 +1,9 @@
 from pyspark.sql import SQLContext
 from pyspark.sql.types import *
 import steel_thread
+from pyspark import SparkContext
 
+sc = SparkContext()
 sqlContext = SQLContext(sc)
 
 outageData=sc.textFile("file:///home/w205/steel_thread/outage_history.csv")
@@ -33,4 +35,4 @@ schemaWeatherData.registerTempTable('RI_Weather')
 results = sqlContext.sql('SELECT * FROM RI_Weather LIMIT 10')
 results.show()
 
-steel_thread.random_prediction()
+print(steel_thread.random_prediction())
