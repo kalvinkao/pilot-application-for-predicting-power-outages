@@ -13,11 +13,10 @@ riOutages = outageData.filter(lambda x: "Rhode Island" in x)
 riOutageRecords = riOutages.map(lambda r : r.split(","))
 weatherRecords = weatherData.map(lambda r : r.split(","))
 
-RI_Outages = riOutageRecords.map(lambda p: (p[2],p[4],p[7],p[10]))
-#delimiters are all fucked up for the outage data
+RI_Outages = riOutageRecords.map(lambda p: (p[2],p[4],p[5],p[8],p[12]))
 RI_Weather = weatherRecords.map(lambda p: (p[5],p[10],p[16], p[17], p[18], p[19]))
 
-outageSchemaString = 'DATETIME DURATION AREA NUMCUSTOMERS'
+outageSchemaString = 'DATETIME HR MIN AREA NUMCUSTOMERS'
 weatherSchemaString = 'DATETIME DRYBULBTEMP HUMIDITY WINDSPEED WINDDIRECTION WINDGUSTSPEED'
 
 outageFields = [StructField(field_name, StringType(), True) for field_name in outageSchemaString.split()]
@@ -32,7 +31,10 @@ schemaWeatherData = sqlContext.createDataFrame(RI_Weather, weatherSchema)
 schemaOutageData.registerTempTable('RI_Outages')
 schemaWeatherData.registerTempTable('RI_Weather')
 
-results = sqlContext.sql('SELECT * FROM RI_Weather LIMIT 10')
-results.show()
+results_weather = sqlContext.sql('SELECT * FROM RI_Weather LIMIT 10')
+results_weather.show()
+
+results_outages = sqlContext.sql('SELECT DATETIME, AREA, NUMCUSTOMERS, CONCAT(HR, MIN) as DURATION FROM RI_Outages LIMIT 10')
+results_outages.show()
 
 print(steel_thread.random_prediction())
