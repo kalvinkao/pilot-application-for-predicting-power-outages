@@ -38,18 +38,3 @@ results_outages = sqlContext.sql('SELECT DATETIME, AREA, NUMCUSTOMERS, CONCAT(HR
 results_outages.show()
 
 print(steel_thread.random_prediction())
-
-from pyspark.sql import functions
-from pyspark.sql import Row
-
-split_col = functions.split(schemaOutageData['DATETIME'], ' ')
-steel_thread_outage_data = schemaOutageData.withColumn('DATETIME', split_col.getItem(0))
-
-weather_dates = schemaWeatherData.select(functions.date_format('DATETIME', 'yyyy-MM-dd HH:mm').alias('date')).collect()
-weather_dates_rdd = sc.parallelize(weather_dates)
-new_row = Row("date")
-l_as_df = weather_dates_rdd.map(new_row).toDF()
-schemaWeatherData2 = schemaWeatherData.join(l_as_df)
-
-schemaWeatherData2.registerTempTable('RI_Weather_2')
-test = sqlContext.sql('SELECT * FROM RI_Weather_2 WHERE cast (date as date) = "2016-01-01" LIMIT 10')
