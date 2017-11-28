@@ -3,6 +3,7 @@ from pyspark.sql.types import *
 import steel_thread
 from pyspark import SparkContext
 import forecast_data_v2
+import numpy as np
 
 sc = SparkContext()
 sqlContext = SQLContext(sc)
@@ -42,7 +43,7 @@ result_weatherOutage = sqlContext.sql('SELECT to_date(w.DTS) as DT ,w.maxTemp ,w
 
 train_data = np.array(result_weatherOutage.select('aveWindSpeed').collect())
 train_labels = np.array(result_weatherOutage.select('OutageIND').collect())
-test_data = get_forecast()
+test_data = forecast_data_v2.get_forecast()
 
 #print(steel_thread.random_prediction())
 prediction_results = steel_thread.steel_thread_prediction(train_data, train_labels, test_data)
