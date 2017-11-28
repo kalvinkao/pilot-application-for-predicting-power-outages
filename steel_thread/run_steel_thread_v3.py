@@ -41,9 +41,36 @@ schemaWeatherData.registerTempTable('RI_Weather')
 result_weatherOutage = sqlContext.sql('SELECT to_date(w.DTS) as DT ,w.maxTemp ,w.minTemp ,w.aveTemp ,w.aveHumidity ,w.WeatherCodes ,w.Precip ,w.Snowfall ,w.SnowDepth ,w.aveStationPressure ,w.aveSeaLevelPressure ,w.aveWindSpeed ,w.maxWindSpeed, w.SustainedWindSpeed ,case when o.DATETIME is null then 0 else 1 end as OutageIND  FROM RI_Weather w left outer join RI_Outages o on to_date(w.DTS) = to_date(concat(substr(DATETIME,7,4),"-",substr(DATETIME,1,2),"-",substr(DATETIME,4,2)))   WHERE w.ReportType="SOD" and year(to_date(w.DTS))=2016 and month(to_date(w.DTS))=2  ORDER BY DT  LIMIT 100')
 #result_weatherOutage.show()
 
-train_data = np.array(result_weatherOutage.select('aveWindSpeed').collect())
-train_labels = np.array(result_weatherOutage.select('OutageIND').collect())
+#train_data = np.array(result_weatherOutage.select('aveWindSpeed').collect())
+#train_labels = np.array(result_weatherOutage.select('OutageIND').collect())
+train_data = []
+train_labels = []
+data = result_weatherOutage.select('aveWindSpeed').collect()
+for a in data:
+	if a.aveWindSpeed:
+		train_data.append(float(a.aveWindSpeed))
+	else:
+		train_data.append(float('nan'))
+
+data = result_weatherOutage.select('OutageIND').collect()
+for a in data:
+	#train_labels.append(float(a.OutageIND))
+	if np.isnan(a.OutageIND):
+		train_labels.append(float('nan'))
+	else:
+		train_labels.append(float(a.OutageIND))
+
+train_data_temp = np.array(train_data).reshape(-1,1)
+train_labels_temp = np.array(train_labels).reshape(-1,1)
+#train_data = (np.array(train_data))[(~np.isnan(train_data_temp)) and (~np.isnan(train_labels_temp))]
+#train_labels = (np.array(train_labels))[(~np.isnan(train_data_temp)) and (~np.isnan(train_labels_temp))]
+train_labels = train_labels_temp[~np.isnan(train_data_temp)]
+train_data = train_data_temp[~np.isnan(train_data_temp)]
 test_data = forecast_data_v2.get_forecast()
+
+train_data = train_data.reshape(-1,1)
+train_labels = train_labels.reshape(-1,1)
+test_data = test_data.reshape(-1,1)
 
 #print(steel_thread.random_prediction())
 prediction_results = steel_thread.steel_thread_prediction(train_data, train_labels, test_data)
