@@ -25,10 +25,3 @@ def random_prediction():
     lrPredictions = lr.predict(test_data)
     
     return lrPredictions
-
-def steel_thread_prediction(train_data, train_labels, test_data):
-    lr = LogisticRegression()
-    lr.fit(train_data, train_labels)
-    lrPredictions = lr.predict(test_data)
-    
-    return lrPredictions
