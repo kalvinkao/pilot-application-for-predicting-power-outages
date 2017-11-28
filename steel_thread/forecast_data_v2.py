@@ -19,7 +19,7 @@ def get_forecast():
 	  low_temp = i['low']['fahrenheit']
 	  print low_temp
 	  
-	  windspeeds.append(wind_mph)
+	  windspeeds.append(float(wind_mph))
 	
 	f.close()
 	
