@@ -1,4 +1,5 @@
 from pyspark.sql import SQLContext
+from pyspark.sql import HiveContext
 from pyspark.sql.types import *
 import steel_thread
 from pyspark import SparkContext
@@ -7,6 +8,7 @@ import numpy as np
 import pandas as pd
 
 sc = SparkContext()
+hive_context = HiveContext(sc)
 sqlContext = SQLContext(sc)
 
 outageData=sc.textFile("file:///home/w205/steel_thread/outage_history.csv")
@@ -85,15 +87,14 @@ np.reshape(prediction_results,(4,1))
 np.reshape(dates,(4,1))
 # print(prediction_results.shape)
 # print(dates.shape)
-combined = np.vstack((prediction_results, dates)).T
-# print(combined.shape)
 location = ['Providence, RI', 'Providence, RI', 'Providence, RI', 'Providence, RI']
 l = np.asarray(location)
 np.reshape(l,(4,1))
+
 combined = np.vstack((l, dates, prediction_results)).T
+
 final_df = pd.DataFrame(combined, columns = ['location', 'date', 'outage'])
 final_df = hive_context.createDataFrame(final_df)
-#final_df = hive_context.table(final_df)
 final_df.saveAsTable('RI_Outage_Table')
 final_df.show()
 final_df.printSchema()
