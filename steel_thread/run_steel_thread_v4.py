@@ -87,11 +87,15 @@ np.reshape(dates,(4,1))
 # print(dates.shape)
 combined = np.vstack((prediction_results, dates)).T
 # print(combined.shape)
-final_df = pd.DataFrame(combined, columns = ['outage','date'])
-
-final_df = sqlContext.createDataFrame(final_df)
-
-final_df.registerTempTable('RI_Outage_Table')
-
-result = sqlContext.sql('SELECT outage, date, "Providence, RI" AS location FROM RI_Outage_Table')
-result.show()
+location = ['Providence, RI', 'Providence, RI', 'Providence, RI', 'Providence, RI']
+l = np.asarray(location)
+np.reshape(l,(4,1))
+combined = np.vstack((l, dates, prediction_results)).T
+final_df = pd.DataFrame(combined, columns = ['location', 'date', 'outage'])
+final_df = hive_context.createDataFrame(final_df)
+#final_df = hive_context.table(final_df)
+final_df.saveAsTable('RI_Outage_Table')
+final_df.show()
+final_df.printSchema()
+#result = sqlContext.sql('SELECT outage, date, "Providence, RI" AS location FROM RI_Outage_Table')
+#result.show()
