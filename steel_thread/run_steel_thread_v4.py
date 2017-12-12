@@ -87,13 +87,16 @@ np.reshape(prediction_results,(4,1))
 np.reshape(dates,(4,1))
 # print(prediction_results.shape)
 # print(dates.shape)
-location = ['Providence, RI', 'Providence, RI', 'Providence, RI', 'Providence, RI']
-l = np.asarray(location)
-np.reshape(l,(4,1))
+state = ['Rhode Island', 'Rhode Island', 'Rhode Island', 'Rhode Island']
+city = ['Providence', 'Providence', 'Providence', 'Providence']
+s = np.asarray(state)
+c = np.asarray(city)
+np.reshape(s,(4,1))
+np.reshape(c,(4,1))
 
-combined = np.vstack((l, dates, prediction_results)).T
+combined = np.vstack((s, c, dates, prediction_results)).T
 
-final_df = pd.DataFrame(combined, columns = ['location', 'date', 'outage'])
+final_df = pd.DataFrame(combined, columns = ['state', 'city', 'date', 'outage'])
 final_df = hive_context.createDataFrame(final_df)
 final_df.saveAsTable('RI_Outage_Table')
 final_df.show()
