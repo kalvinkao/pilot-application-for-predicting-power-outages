@@ -11,4 +11,4 @@ MAILTO="joanna.huang@berkeley.edu"
 16 00 * * * source /data/anaconda3/bin/activate /home/w205/w205_final_project/steel_thread && /data/spark15/bin/spark-submit /home/w205/w205_final_project/steel_thread/forecast_data_v3.py >> /home/w205/w205_final_project/steel_thread/testing.txt 2>&1 && source deactivate
 
 # Below cron job does not work... 
-16 00 * * * source /data/anaconda3/bin/activate /home/w205/w205_final_project/steel_thread && PYTHONPATH=/data/anaconda3/lib/python3.6/site-packages/ /data/spark15/bin/spark-submit /home/w205/w205_final_project/steel_thread/run_steel_thread_v4.py >> /home/w205/w205_final_project/steel_thread/testing2.txt 2>&1 && source deactivate
+43 00 * * * source /data/anaconda3/bin/activate /home/w205/w205_final_project/steel_thread && PYTHONPATH=/data/anaconda3/envs/steel_thread/lib/python2.7/ /data/spark15/bin/spark-submit /home/w205/w205_final_project/steel_thread/run_steel_thread_v4.py >> /home/w205/w205_final_project/steel_thread/testing2.txt 2>&1 && source deactivate
