@@ -1,0 +1,29 @@
+about to import
+finished importing
+/data/anaconda3/envs/steel_thread/lib/python2.7/site-packages/sklearn/utils/validation.py:578: DataConversionWarning: A column-vector y was passed when a 1d array was expected. Please change the shape of y to (n_samples, ), for example using ravel().
+  y = column_or_1d(y, warn=True)
+['Dec 16 2017  19:00PM', 'Dec 17 2017  19:00PM', 'Dec 18 2017  19:00PM', 'Dec 19 2017  19:00PM']
+<type 'datetime.datetime'>
+2017-12-16 19:00:00
+<type 'datetime.datetime'>
+2017-12-17 19:00:00
+<type 'datetime.datetime'>
+2017-12-18 19:00:00
+<type 'datetime.datetime'>
+2017-12-19 19:00:00
++------------+----------+--------------------+--------------------+------+
+|       state|      city|                date|         probability|outage|
++------------+----------+--------------------+--------------------+------+
+|Rhode Island|Providence|2017-12-16 19:00:...|0.011621931242731252|     1|
+|Rhode Island|Providence|2017-12-17 19:00:...|  0.2184657323428948|     0|
+|Rhode Island|Providence|2017-12-18 19:00:...| 0.45449149174456954|     0|
+|Rhode Island|Providence|2017-12-19 19:00:...| 0.14524587420555327|     0|
++------------+----------+--------------------+--------------------+------+
+
+root
+ |-- state: string (nullable = true)
+ |-- city: string (nullable = true)
+ |-- date: timestamp (nullable = true)
+ |-- probability: double (nullable = true)
+ |-- outage: long (nullable = true)
+
