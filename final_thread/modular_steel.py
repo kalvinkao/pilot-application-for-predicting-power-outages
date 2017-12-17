@@ -31,11 +31,9 @@ def get_state_data():
     weatherData = sc.textFile(filename)
     weatherRecords = weatherData.map(lambda r: r.split(","))
     Outages = stateoutage.map(lambda p: (p[2], p[4], p[5], p[8], p[12]))
-    State_Weather = weatherRecords.map(lambda p: (p[6], p[7], p[15], p[16]))
-    #State_Weather = weatherRecords.map(lambda p: (p[5], p[6], p[26], p[27], p[28], p[30], p[37], p[38], p[39], p[40], p[41], p[42], p[43], p[44], p[46]))
+    State_Weather = weatherRecords.map(lambda p: (p[5], p[6], p[26], p[27], p[28], p[30], p[37], p[38], p[39], p[40], p[41], p[42], p[43], p[44], p[46]))
     outageSchemaString = 'DATETIME HR MIN AREA NUMCUSTOMERS'  # If the above gets updated, this would too (of course)
-    weatherSchemaString = 'DTS aveWindSpeed maxTemp minTemp'
-    #weatherSchemaString = 'DTS ReportType maxTemp minTemp aveTemp aveHumidity WeatherCodes Precip Snowfall SnowDepth aveStationPressure aveSeaLevelPressure aveWindSpeed maxWindSpeed SustainedWindSpeed'
+    weatherSchemaString = 'DTS ReportType maxTemp minTemp aveTemp aveHumidity WeatherCodes Precip Snowfall SnowDepth aveStationPressure aveSeaLevelPressure aveWindSpeed maxWindSpeed SustainedWindSpeed'
     outageFields = [StructField(field_name, StringType(), True) for field_name in outageSchemaString.split()]
     weatherFields = [StructField(field_name, StringType(), True) for field_name in weatherSchemaString.split()]
     outageSchema = StructType(outageFields)
@@ -48,10 +46,9 @@ def get_state_data():
     schemaWeatherData.registerTempTable('State_Weather')
     show_weather = sqlContext.sql('SELECT * FROM State_Weather')
     show_weather.show()
-    result_weatherOutage = sqlContext.sql('SELECT to_date(w.DTS) as DT, w.aveWindSpeed, w.maxTemp, w.minTemp, case when o.DATETIME is null then 0 else 1 end as OutageIND FROM State_Weather w left outer join State_Outages o on to_date(w.DTS) = to_date(concat(substr(DATETIME,7,4),"/",substr(DATETIME,1,2),"/",substr(DATETIME,4,2)))   WHERE year(to_date(w.DTS))=2016 and month(to_date(w.DTS))=2  ORDER BY DT  LIMIT 100')
-    #result_weatherOutage = sqlContext.sql('SELECT to_date(w.DTS) as DT ,w.maxTemp ,w.minTemp ,w.aveTemp ,w.aveHumidity ,w.WeatherCodes ,w.Precip ,w.Snowfall ,w.SnowDepth ,w.aveStationPressure ,w.aveSeaLevelPressure ,w.aveWindSpeed ,w.maxWindSpeed, w.SustainedWindSpeed ,case when o.DATETIME is null then 0 else 1 end as OutageIND  FROM RI_Weather w left outer join RI_Outages o on to_date(w.DTS) = to_date(concat(substr(DATETIME,7,4),"-",substr(DATETIME,1,2),"-",substr(DATETIME,4,2)))   WHERE w.ReportType="SOD" and year(to_date(w.DTS))=2016 and month(to_date(w.DTS))=2  ORDER BY DT  LIMIT 100')
+    result_weatherOutage = sqlContext.sql('SELECT to_date(w.DTS) as DT ,w.maxTemp ,w.minTemp ,w.aveTemp ,w.aveHumidity ,w.WeatherCodes ,w.Precip ,w.Snowfall ,w.SnowDepth ,w.aveStationPressure ,w.aveSeaLevelPressure ,w.aveWindSpeed ,w.maxWindSpeed, w.SustainedWindSpeed ,case when o.DATETIME is null then 0 else 1 end as OutageIND  FROM RI_Weather w left outer join RI_Outages o on to_date(w.DTS) = to_date(concat(substr(DATETIME,7,4),"-",substr(DATETIME,1,2),"-",substr(DATETIME,4,2)))   WHERE w.ReportType="SOD" and year(to_date(w.DTS))=2016 and month(to_date(w.DTS))=2  ORDER BY DT  LIMIT 100')
     result_weatherOutage.show()
-    data = result_weatherOutage.select('aveWindSpeed', 'maxTemp', 'minTemp').collect()
+    data = result_weatherOutage.select('aveWindSpeed', 'maxTemp', 'minTemp', 'aveHumidity').collect()
     return data
 
 print(get_state_data())
