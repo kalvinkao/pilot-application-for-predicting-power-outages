@@ -1,3 +1,5 @@
+Demo Video: https://drive.google.com/open?id=1hs661E9WI_TOuGKafBCBjclYgPr6VjKW
+
 About the Instance:
 We have created an AMI, "UCB W205 Fall 2017 Project (Semi-Final)" with AMI ID "ami-12c7bb68" with our github repo cloned and conda environment installed. After connecting to the instance, do a clean startup of Hadoop, postgres, Hive metastore and HiveServer2:
 1) mount HDFS volume
