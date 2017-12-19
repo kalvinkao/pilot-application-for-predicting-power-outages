@@ -5,8 +5,6 @@ from datetime import datetime
 
 #wu_url='http://api.wunderground.com/api/40c1e03239029f36/forecast/q/RI/Providence.json'
 
-# Why is get_forecast and get_dates separated?  Could we just add the dates into the get_forecast?
-
 def get_forecast(wu_url='http://api.wunderground.com/api/40c1e03239029f36/forecast/q/RI/Providence.json'):
   f = urllib2.urlopen(wu_url)
   json_string = f.read()
@@ -44,13 +42,13 @@ def get_dates(wu_url='http://api.wunderground.com/api/40c1e03239029f36/forecast/
     ampm = i['date']['ampm']
     date_time = str(month) + ' ' + str(day) + ' ' + str(year) + '  ' + str(hour)+':'+str(min)+str(ampm)
     dates.append(date_time)
-  print dates
+  #print dates
   formatted_dates = []
 
   for d in dates:
     date = datetime.strptime(d,'%b %d %Y %H:%M%p')
-    print type(date)
-    print date
+    #print type(date)
+    #print date
     formatted_dates.append(date)
 
   f.close()
