@@ -1,7 +1,7 @@
 Demo Video: https://drive.google.com/open?id=1hs661E9WI_TOuGKafBCBjclYgPr6VjKW
 
 About the Instance:
-We have created an AMI, "UCB W205 Fall 2017 Power Outage Project" with AMI ID "ami-c35927b9" with our github repo cloned and conda environment installed. After connecting to the instance, do a clean startup of Hadoop, postgres, Hive metastore and HiveServer2:
+We have created an AMI, "UCB W205 Fall 2017 Power Outage Project" with AMI ID "ami-c35927b9" with our github repo cloned and conda environment installed.  This instance should use the "Hadoop Cluster UCB" security group created in Lab 2 (which has TCP ports 22, 4040, 7180, 8080, 8088, 10000, and 50070 open on '0.0.0.0/0').  After connecting to the instance, do a clean startup of Hadoop, postgres, Hive metastore and HiveServer2:
 1) mount HDFS volume
 2) /root/start-hadoop.sh
 3) /data/start_postgres.sh
