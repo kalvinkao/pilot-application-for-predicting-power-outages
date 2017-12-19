@@ -1,3 +1,4 @@
+# This file was for determining the environment variables available in our conda environment. To find the path on your instance, activate the conda environment and enter "env >login_details.txt." Copy the entire PATH below and put it in run_bash.sh right below #!/bin/bash.
 SPARK_HOME=/data/spark15
 HOSTNAME=ip-172-31-22-97
 SHELL=/bin/bash
